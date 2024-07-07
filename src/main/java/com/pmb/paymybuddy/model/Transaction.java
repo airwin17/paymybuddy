@@ -1,16 +1,34 @@
 package com.pmb.paymybuddy.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+
+@Entity
 public class Transaction {
+    @Id
     private String id;
+    @OneToOne
+    private BankAcount sender;
+    @OneToOne
+    private BankAcount receiver;
     private double amount;
     private String description;
-    private String date;
-    private String sender;
-    private String receiver;
-
-    public Transaction(){
-
+    
+    public Transaction(String id, BankAcount sender, BankAcount receiver, double amount, String description) {
+        this.id = id;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.amount = amount;
+        this.description = description;
     }
+    public Transaction(BankAcount sender, BankAcount receiver, double amount, String description) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.amount = amount;
+        this.description = description;
+    }
+
     public String getId() {
         return id;
     }
@@ -35,27 +53,19 @@ public class Transaction {
         this.description = description;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getSender() {
+    public BankAcount getSender() {
         return sender;
     }
 
-    public void setSender(String sender) {
+    public void setSender(BankAcount sender) {
         this.sender = sender;
     }
 
-    public String getReceiver() {
+    public BankAcount getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(String receiver) {
+    public void setReceiver(BankAcount receiver) {
         this.receiver = receiver;
     }
     

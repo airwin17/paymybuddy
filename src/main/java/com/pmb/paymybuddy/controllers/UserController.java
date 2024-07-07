@@ -1,29 +1,21 @@
 package com.pmb.paymybuddy.controllers;
 
-import java.util.Optional;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pmb.paymybuddy.exceptions.EmailAlreadyExistsException;
-import com.pmb.paymybuddy.exceptions.UserNotFoundException;
 import com.pmb.paymybuddy.model.User;
 import com.pmb.paymybuddy.services.UserService;
 
-@RestController
+@RestController( "/api/user")
 public class UserController {
+    @Autowired
     private UserService userService;
     
-    public UserController() {
-        this.userService =new UserService();;
-    }
     @PostMapping("/saveUser")
     public ResponseEntity<String> createUser(@RequestBody User user) {
         try {
@@ -33,7 +25,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @GetMapping("/getUserbyId/{id}")
+    /*@GetMapping("/getUserbyId/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") String id) {
         Optional<User> user = userService.findUserById(id);
         if(user.isPresent()) 
@@ -58,6 +50,16 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+    @PostMapping("/addConnection")
+    public ResponseEntity<String> addConnection(@RequestParam String id1, @RequestParam String id2) {
+        
+        try {
+            userService.addConnection(id1,id2);
+            return ResponseEntity.ok("Connection added");
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
     @DeleteMapping("/deleteUser")
     public ResponseEntity<String> deleteUser(@RequestParam String id) {
         try{
@@ -66,5 +68,5 @@ public class UserController {
         }catch(UserNotFoundException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }
+    }*/
 }

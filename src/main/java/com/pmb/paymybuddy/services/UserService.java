@@ -1,27 +1,41 @@
 package com.pmb.paymybuddy.services;
 
-import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.pmb.paymybuddy.exceptions.ActionNotAllowed;
 import com.pmb.paymybuddy.exceptions.EmailAlreadyExistsException;
 import com.pmb.paymybuddy.exceptions.UserNotFoundException;
 import com.pmb.paymybuddy.model.User;
-import com.pmb.paymybuddy.repositories.intefaces.UserRepository;
-import com.pmb.paymybuddy.repositories.repositoriesImpl.UserRepositoryimpl;
-@Service
-public class UserService {
-    private UserRepository userRepository;
+import com.pmb.paymybuddy.repositories.UserRepository;
 
-    public UserService() {
-        userRepository = new UserRepositoryimpl();
-    }
+import at.favre.lib.crypto.bcrypt.BCrypt;
+@Service
+public class UserService implements UserDetailsService{
+    @Autowired
+    private UserRepository userRepository;
     public void save(User user) throws EmailAlreadyExistsException {
-        if(userRepository.findUserByEmail(user.getEmail()).isPresent()) 
+        if(userRepository.findUserByEmail(user.getEmail()).isPresent())
             throw new EmailAlreadyExistsException("Email already exists");
-        else
+        else{
+            String encryptedPassword = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
+            user.setPassword(encryptedPassword);
             userRepository.save(user);
+        }
+    }
+    public void addConnection(User user, int id2) throws UserNotFoundException,ActionNotAllowed {
+        Optional<User> user1 = userRepository.findById(id2);
+        if(user1.isPresent()) {
+            user1.get().getConnectedUser().add(userRepository.findById(id2).get());
+        }else throw new UserNotFoundException("User not found");
+    }
+    /*public void deleteConnection(String id1, String id2) {
+        userRepository.deleteConnection(id1, id2);
     }
     public Optional<User> findUserById(String id) {
         return userRepository.findUserById(id);
@@ -48,7 +62,15 @@ public class UserService {
             throw new UserNotFoundException("User not found");
     }
     public void deleteAll() {
-        ((UserRepositoryimpl)userRepository).deleteAllUser();
+        userRepository.deleteAllUser();
+    }*/
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.findUserByUsername(username);
+        if(user.isPresent())
+            return user.get();
+        else
+            throw new UsernameNotFoundException("User not found");
     }
 
 }

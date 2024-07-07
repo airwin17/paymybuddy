@@ -15,7 +15,7 @@ import com.pmb.paymybuddy.services.UserService;
 
 @TestComponent
 public class UserControllerTest {
-    UserService userService = new UserService();
+    /*UserService userService = new UserService();
     private MockMvc mockMvc;
     @BeforeEach
     public void init(){
@@ -112,5 +112,5 @@ public class UserControllerTest {
     public int getUsercount(){
         UserService userService = new UserService();
         return userService.findAll().size();
-    }
+    }*/
 }
