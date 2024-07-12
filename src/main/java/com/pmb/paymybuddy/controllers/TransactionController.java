@@ -1,20 +1,15 @@
 package com.pmb.paymybuddy.controllers;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pmb.paymybuddy.exceptions.UserNotFoundException;
-import com.pmb.paymybuddy.model.Transaction;
 import com.pmb.paymybuddy.services.TransactionService;
 @RestController
 public class TransactionController {
-    /*TransactionService transactionService;
+    TransactionService transactionService;
     public TransactionController() {
         transactionService = new TransactionService();
     }
-    @PostMapping("/saveTransaction")
+    /*@PostMapping("/saveTransaction")
     public ResponseEntity<String> saveTransaction(Transaction transaction) {
         transactionService.saveTransaction(transaction);
         return ResponseEntity.ok("Transaction saved");

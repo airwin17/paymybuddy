@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Add relationship</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link th:href="@{/css/header.css}" type="text/css" rel="stylesheet">
+        <link th:href="@{/css/addRelationship.css}" type="text/css" rel="stylesheet">
+        <script defer th:src="@{/js/addRelationship.js}"></script>
+    </head>
+    <body>
+        <div th:replace="~{fragments/header :: header}"></div>
+        <section >
+            <form th:action="@{/addRelationship}" method="post" id="post-form">
+                <label for="email">Chercher une relation</label>
+                <input type="submit" value="Ajouter" name="submit" id="submit">
+                <input type="email" name="friendEmail" placeholder="Sesir une adresse mail" id="email" required>
+            </form>
+        </section>
+    </body>
+</html>

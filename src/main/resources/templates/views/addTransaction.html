@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Add transaction</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/css/header.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/css/addTransaction.css}" type="text/css" rel="stylesheet">
+    <script defer th:src="@{/js/addTransaction.js}"></script>
+    <style>
+        article {
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: fit-content;
+            width: fit-content;
+            margin: 150px auto 0 auto;
+        }
+        #post-form {
+            display: grid;
+            margin: auto;
+            height: fit-content;
+            width: fit-content;
+            padding: 10px;
+            grid-template-columns: fit-content fit-content 1fr 1fr;
+        }
+        #post-form input , #post-form select {
+            margin: 10px;
+            border-radius: 5px;
+            border-width: 0px;
+            height: 35px;
+            font-size: 16px;
+            padding-left: 10px;
+        }
+        #post-form input:focus-visible, #post-form select:focus-visible {
+            outline: none;
+        }
+        #post-form #pay {
+            grid-column: 4/5;
+            background-color: #207FEE;
+            color: white;
+            width: 100px;
+        }
+        #relationship , #description, #amount {
+            box-shadow: 0px 0px 1px 1px #d7d7d7;
+        }
+        #post-form select, #post-form #description {
+            width: 250px;
+        }
+        #section-table {
+            margin: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 1px 1px #d7d7d7;
+            padding: 10px;
+        }
+        #section-table table {
+            width: 100%;
+            text-align: left;
+        }
+        #section-table table td{
+            padding: 10px 0;
+            border-top: 1px solid #d7d7d7;
+        }
+    </style>
+</head>
+
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <article id="article-form">
+        <section id="section-form">
+            <form id="post-form">
+                <select name="relarionship" id="relationship" required>
+                    <option value="" disabled selected>Sélectionner une relation</option>
+                    <option value="test1">1</option>
+                    <option value="test2">2</option>
+                    <option value="test3">3</option>
+                </select>
+                <input type="test" name="description" placeholder="Description" id="description">
+                <input type="number" name="amount" placeholder="Montant" id="amount" required>
+                <input type="submit" value="Payer" name="pay" id="pay">
+            </form>
+        </section>
+        <section id="section-table">
+            <h1>Mes transactions</h1>
+            <tbody>
+                <table>
+                    <tr>
+                        <th>Relation</th>
+                        <th>Description</th>
+                        <th>Montant</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                    </tr>
+                </table>
+            </tbody>
+        </section>
+    </article>
+</body>
+
+</html>

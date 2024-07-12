@@ -34,6 +34,18 @@ public class UserService implements UserDetailsService{
             user1.get().getConnectedUser().add(userRepository.findById(id2).get());
         }else throw new UserNotFoundException("User not found");
     }
+    public void updateUser(User Nuser) throws UserNotFoundException{
+        Optional<User> user1 = userRepository.findById(Nuser.getId());
+        if(user1.isPresent()){
+            User user=user1.get();
+            user.setEmail(Nuser.getEmail());
+            user.setUsername(Nuser.getUsername());
+            if(Nuser.getPassword()!=null)
+                user.setPassword(encrypPassword(user1.get().getPassword()));
+            userRepository.save(user);
+        }else
+            throw new UserNotFoundException("User not found");
+    }
     /*public void deleteConnection(String id1, String id2) {
         userRepository.deleteConnection(id1, id2);
     }
@@ -55,12 +67,7 @@ public class UserService implements UserDetailsService{
         else
             throw new UserNotFoundException("User not found");
     }
-    public void updateUser(User user) throws UserNotFoundException{
-        if(userRepository.findUserById(user.getId()).isPresent())
-            userRepository.updateUser(user);
-        else
-            throw new UserNotFoundException("User not found");
-    }
+    
     public void deleteAll() {
         userRepository.deleteAllUser();
     }*/
@@ -72,5 +79,7 @@ public class UserService implements UserDetailsService{
         else
             throw new UsernameNotFoundException("User not found");
     }
-
+    public String encrypPassword(String password) {
+        return BCrypt.withDefaults().hashToString(12, password.toCharArray());
+    }
 }

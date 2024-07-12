@@ -1,0 +1,43 @@
+#post-form{
+    display: grid;
+    margin: 150px auto;
+    height: fit-content;
+    width: fit-content;
+    padding: 10px;
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 1fr 2fr;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+#post-form label{
+    grid-column: 1/4;
+    grid-row: 1/2;
+    margin-left: 10px;
+}
+#post-form #email:focus-visible{
+    outline: none;
+}
+#post-form #submit{
+    grid-column: 4/5;
+    grid-row: 2/4;
+    margin: 10px;
+    border-radius: 5px;
+    border-width: 0px;
+    background-color: #F69F1D;
+    width: 200px;
+    height: 35px;
+    color:white;
+    font-size: 16px;
+}
+#post-form #email{
+    grid-column: 1/4;
+    grid-row: 2/4;
+    margin: 10px;
+    border-radius: 5px;
+    padding: 5px;
+    border-width: 0px;
+    box-shadow: 0px 0px 2px 1px #dedede;
+    width: 400px;
+    height: 35px;
+    font-size: 18px;
+}

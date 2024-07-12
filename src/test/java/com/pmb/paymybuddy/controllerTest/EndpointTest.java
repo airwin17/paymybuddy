@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -20,8 +21,10 @@ public class EndpointTest {
     }
     @Test
     public void saveUserTest() throws Exception{
-        mockmvc.perform(MockMvcRequestBuilders.get("/signin")).andExpect(
-            result -> assertEquals(403, result.getResponse().getStatus())
-        );
+        /*mockmvc.perform(MockMvcRequestBuilders.get("/signin")).andExpect(
+            result -> assertEquals(200, result.getResponse().getStatus())
+        );*/
+        ResultActions result = mockmvc.perform(MockMvcRequestBuilders.get("/signin"));
+        assertEquals(200,  result.andReturn().getResponse().getStatus());
     }
 }

@@ -3,15 +3,18 @@ package com.pmb.paymybuddy.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pmb.paymybuddy.exceptions.EmailAlreadyExistsException;
+import com.pmb.paymybuddy.exceptions.UserNotFoundException;
 import com.pmb.paymybuddy.model.User;
 import com.pmb.paymybuddy.services.UserService;
 
-@RestController( "/api/user")
+@RestController
+@RequestMapping("/api/user")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -23,6 +26,15 @@ public class UserController {
             return ResponseEntity.ok("User created");
         } catch (EmailAlreadyExistsException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @PutMapping("/updateUser")
+    public ResponseEntity<String> updateUser(@RequestBody User user) {
+        try {
+            userService.updateUser(user);
+            return ResponseEntity.ok("User updated");
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.notFound().build();
         }
     }
     /*@GetMapping("/getUserbyId/{id}")
@@ -41,15 +53,7 @@ public class UserController {
         else
             return ResponseEntity.notFound().build();
     }
-    @PutMapping("/updateUser")
-    public ResponseEntity<String> updateUser(@RequestBody User user) {
-        try {
-            userService.updateUser(user);
-            return ResponseEntity.ok("User updated");
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
+    
     @PostMapping("/addConnection")
     public ResponseEntity<String> addConnection(@RequestParam String id1, @RequestParam String id2) {
         

@@ -8,6 +8,7 @@ import jakarta.persistence.Table;
 @Table(name = "bank_account")
 public class BankAcount {
     @Id
+    private String id;
     private String iban;
     private double balance;
     public BankAcount(String iban) {  

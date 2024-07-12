@@ -8,9 +8,9 @@ import com.pmb.paymybuddy.model.Transaction;
 import com.pmb.paymybuddy.repositories.TransactionRepository;
 
 public class TransactionService {
-    /*TransactionRepository transactionRepository;
+    TransactionRepository transactionRepository;
     UserService userService;
-    public TransactionService() {
+    /*public TransactionService() {
         this.transactionRepository = new TransactionRepository();
         this.userService = new UserService();
     }
