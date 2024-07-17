@@ -11,9 +11,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.pmb.paymybuddy.controllers.GlobalController;
-import com.pmb.paymybuddy.controllers.UserController;
 @SpringBootTest
-public class EndpointTest {
+public class GlobalControllerTest {
     MockMvc mockmvc;
     @BeforeEach
     public void init(){

@@ -10,10 +10,10 @@
     <body>
         <div th:replace="~{fragments/header :: header}"></div>
         <section >
-            <form th:action="@{/addRelationship}" method="post" id="post-form">
+            <form th:action="@{/api/user/addConnection}" method="post" id="post-form">
                 <label for="email">Chercher une relation</label>
-                <input type="submit" value="Ajouter" name="submit" id="submit">
-                <input type="email" name="friendEmail" placeholder="Sesir une adresse mail" id="email" required>
+                <input type="submit" value="Ajouter" onclick="addRelationship()" id="submit">
+                <input type="text" name="email" placeholder="Sesir une adresse mail" id="email" required>
             </form>
         </section>
     </body>

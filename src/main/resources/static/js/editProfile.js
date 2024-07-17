@@ -37,6 +37,31 @@ cancelButton.onclick=function(){
 }
 submitButton.onclick=function(e){
     e.preventDefault();
+    
+    if(formstate){
+        var username=usernameInput.value;
+    var email=emailInput.value;
+    var password=passwordInput.value;
+    var user = {
+        username: username,
+        email: email,
+        password: password
+    };
+    jsonUser = JSON.stringify(user);
+    fetch("/api/user/updateUser", {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: jsonUser
+    }).then(response => {
+        if (response.ok) {
+            alert("User updated");
+            window.location.reload();
+        } else {
+            alert(response.statusText);
+        }
+    });
+    }
     switchFormState(true);
-
 }

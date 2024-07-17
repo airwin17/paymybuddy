@@ -39,14 +39,15 @@ public class DatasourceConfig {
         http
         .csrf(csrf->csrf.disable())
         .authorizeHttpRequests(req->req
-        .requestMatchers("/api/user/saveUser").permitAll()
+        .requestMatchers("/api/user/saveUser").anonymous()
         .requestMatchers("/api/user/**").authenticated()
-        .requestMatchers("/profil").permitAll()
-        .requestMatchers("/addRelationship").permitAll()
-        .requestMatchers("/addTransaction").permitAll()
-        .requestMatchers("/signin").permitAll()
+        .requestMatchers("/profil").authenticated()
+        .requestMatchers("/addRelationship").authenticated()
+        .requestMatchers("/addTransaction").authenticated()
+        .requestMatchers("/signin").anonymous()
         .anyRequest().permitAll()).formLogin(login->login.loginPage("/loginPage").permitAll()
-        .loginProcessingUrl("/login"))
+        .loginProcessingUrl("/login").usernameParameter("email").defaultSuccessUrl("/addTransaction")
+        ).logout(logout->logout.logoutUrl("/logout").logoutSuccessUrl("/loginPage"))
         .authenticationManager(authenticationProvider());
         return http.build();
     }

@@ -2,115 +2,69 @@ package com.pmb.paymybuddy.controllerTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.TestComponent;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.pmb.paymybuddy.controllers.UserController;
-import com.pmb.paymybuddy.services.UserService;
+import com.pmb.paymybuddy.repositories.UserRepository;
+import jakarta.servlet.http.Cookie;
 
-@TestComponent
+@SpringBootTest
+@AutoConfigureMockMvc
+@ExtendWith(SpringExtension.class)
 public class UserControllerTest {
-    /*UserService userService = new UserService();
-    private MockMvc mockMvc;
-    @BeforeEach
-    public void init(){
-        mockMvc=MockMvcBuilders.standaloneSetup(new UserController()).build();
-        userService=new UserService();
-        //reset user table
-        userService.deleteAll();
+    @Autowired
+    private MockMvc mockmvc;
+    @Autowired
+    private UserRepository userRepository;
+
+    public Cookie login() throws Exception {
+        String requestBody = "email=testo&password=";
+        ResultActions result = mockmvc.perform(MockMvcRequestBuilders.post("/login")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .content(requestBody));
+                MockHttpServletResponse res=result.andReturn().getResponse();
+                Cookie cookie=result.andReturn().getResponse().getCookie("JSESSIONID");
+        return cookie;
     }
 
     @Test
-    public void createUser() throws Exception {
-        int before=userService.findAll().size();
-        ResultActions ra=mockMvc.perform(MockMvcRequestBuilders
-            .post("/saveUser")
-            .contentType("application/json")
-            .content("{\n" +
-                "    \"username\": \"test\",\n" +
-                "    \"password\": \"test\",\n" +
-                "    \"email\": \"test\"\n" +
-                "}"));
-                String res=ra.andReturn().getResponse().getContentAsString();
-            int after=userService.findAll().size();
-            assertEquals("User created", res);
-            assertEquals(before+1,after);
+    public void createUserTest() throws Exception {
+        int before = userRepository.findAll().size();
+        mockmvc.perform(MockMvcRequestBuilders.post("/api/user/saveUser")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                        { "username": "testu",
+                         "password": "testi",
+                         "email": "testa"
+                         }
+                        """));
+        int after = userRepository.findAll().size();
+        assertEquals(before + 1, after);
     }
 
     @Test
-    public void createUserWhereEmailAlreadyExists() throws Exception {
-        createUser();
-        mockMvc.perform(MockMvcRequestBuilders
-            .post("/saveUser")
-            .contentType("application/json")
-            .content("""
-                {
-                    "username": "test",
-                    "password": "test",
-                    "email": "test"
-                }""")).andExpect(mvcResult -> assertEquals(400, mvcResult.getResponse().getStatus()));
-    }
-    @Test
-    public void getUserByIdTest() throws Exception {
-        createUser();
-        mockMvc.perform(MockMvcRequestBuilders
-            .get("/getUserbyId/1"))
-            .andExpect(mvcResult -> assertEquals(200, mvcResult.getResponse().getStatus()));
-    }
-    @Test
-    public void getUserByIdWhenUserDoesNotExist() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders
-            .get("/getUserbyId/1"))
-            .andExpect(mvcResult -> assertEquals(404, mvcResult.getResponse().getStatus()));
-    }
-    @Test
-    public void getUserByUsernameTest() throws Exception {
-        createUser();
-        mockMvc.perform(MockMvcRequestBuilders
-            .get("/getUserByUsername/test"))
-            .andExpect(mvcResult -> assertEquals(200, mvcResult.getResponse().getStatus()));
-    }
-    @Test
-    public void getUserByUsernameWhenUserDoesNotExist() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders
-            .get("/getUserByUsername/test"))
-            .andExpect(mvcResult -> assertEquals(404, mvcResult.getResponse().getStatus()));
-    }
-    @Test 
     public void updateUserTest() throws Exception {
-        createUser();
-        mockMvc.perform(MockMvcRequestBuilders
-            .put("/updateUser")
-            .contentType("application/json")
-            .content(String.format("""
-                {
-                    "id": 1,
-                    "username": "test",
-                    "password": "test",
-                    "email": "test"
-                }"""))).andExpect(mvcResult -> assertEquals(200, mvcResult.getResponse().getStatus()));
+        Cookie cookie = login();
+        String before = userRepository.findUserByEmail("testo").get().getUsername();
+        mockmvc.perform(MockMvcRequestBuilders.put("/api/user/updateUser")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                        { "username": "testuoooo",
+                         "password": "testi",
+                         "email": "testo"
+                         }
+                        """)
+                .cookie(cookie));
+        String after = userRepository.findUserByEmail("testo").get().getUsername();
+        assertEquals("testuoooo", after);
     }
-    @Test
-    public void updateUserwhenUserDoesNotExistTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders
-            .put("/updateUser")
-            .contentType("application/json")
-            .content(String.format("""
-                {
-                    "id": 1,
-                    "username": "test",
-                    "password": "test",
-                    "email": "test"
-                }"""))).andExpect(mvcResult -> assertEquals(404, mvcResult.getResponse().getStatus()));
-    }
-
-    public int getUsercount(){
-        UserService userService = new UserService();
-        return userService.findAll().size();
-    }*/
 }

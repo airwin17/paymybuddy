@@ -1,13 +1,18 @@
 package com.pmb.paymybuddy.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pmb.paymybuddy.exceptions.ActionNotAllowed;
 import com.pmb.paymybuddy.exceptions.EmailAlreadyExistsException;
 import com.pmb.paymybuddy.exceptions.UserNotFoundException;
 import com.pmb.paymybuddy.model.User;
@@ -18,7 +23,7 @@ import com.pmb.paymybuddy.services.UserService;
 public class UserController {
     @Autowired
     private UserService userService;
-    
+
     @PostMapping("/saveUser")
     public ResponseEntity<String> createUser(@RequestBody User user) {
         try {
@@ -28,49 +33,21 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     @PutMapping("/updateUser")
-    public ResponseEntity<String> updateUser(@RequestBody User user) {
-        try {
-            userService.updateUser(user);
-            return ResponseEntity.ok("User updated");
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<HttpStatus> updateUser(@RequestBody User user, @AuthenticationPrincipal User logedUser) {
+        userService.updateUser(user, logedUser);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
-    /*@GetMapping("/getUserbyId/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") String id) {
-        Optional<User> user = userService.findUserById(id);
-        if(user.isPresent()) 
-            return ResponseEntity.ok(user.get());
-        else
-            return ResponseEntity.notFound().build();
-    }
-    @GetMapping("/getUserByUsername/{username}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable("username") String username) {
-        Optional<User> user = userService.findUserByUsername(username);
-        if(user.isPresent()) 
-            return ResponseEntity.ok(user.get());
-        else
-            return ResponseEntity.notFound().build();
-    }
-    
     @PostMapping("/addConnection")
-    public ResponseEntity<String> addConnection(@RequestParam String id1, @RequestParam String id2) {
-        
+    public ResponseEntity<HttpStatus> addConnection(@RequestParam String email,@AuthenticationPrincipal User logedUser) {
         try {
-            userService.addConnection(id1,id2);
-            return ResponseEntity.ok("Connection added");
+            userService.addConnection(email, logedUser);
+            return ResponseEntity.ok(HttpStatus.ACCEPTED);
         } catch (UserNotFoundException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }catch(ActionNotAllowed e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
-    @DeleteMapping("/deleteUser")
-    public ResponseEntity<String> deleteUser(@RequestParam String id) {
-        try{
-            userService.deleteUserById(id);
-            return ResponseEntity.ok("User deleted");
-        }catch(UserNotFoundException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }*/
 }

@@ -3,37 +3,33 @@ package com.pmb.paymybuddy.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 
 @Entity
 public class Transaction {
     @Id
-    private String id;
+    private Integer id;
     @OneToOne
-    private BankAcount sender;
+    @PrimaryKeyJoinColumn(name = "sender")
+    private User sender;
     @OneToOne
-    private BankAcount receiver;
+    @PrimaryKeyJoinColumn(name = "receiver")
+    private User receiver;
     private double amount;
     private String description;
     
-    public Transaction(String id, BankAcount sender, BankAcount receiver, double amount, String description) {
-        this.id = id;
-        this.sender = sender;
-        this.receiver = receiver;
-        this.amount = amount;
-        this.description = description;
-    }
-    public Transaction(BankAcount sender, BankAcount receiver, double amount, String description) {
+    public Transaction(User sender, User receiver, double amount, String description) {
         this.sender = sender;
         this.receiver = receiver;
         this.amount = amount;
         this.description = description;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -53,19 +49,19 @@ public class Transaction {
         this.description = description;
     }
 
-    public BankAcount getSender() {
+    public User getSender() {
         return sender;
     }
 
-    public void setSender(BankAcount sender) {
+    public void setSender(User sender) {
         this.sender = sender;
     }
 
-    public BankAcount getReceiver() {
+    public User getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(BankAcount receiver) {
+    public void setReceiver(User receiver) {
         this.receiver = receiver;
     }
     

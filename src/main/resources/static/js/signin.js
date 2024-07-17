@@ -25,7 +25,7 @@ function signin() {
     }).then(response => {
         if (response.ok) {
             alert("User created");
-            window.location.href = "/login";
+            window.location.href = "/loginPage";
         }else{
             alert(response.statusText);
         }
