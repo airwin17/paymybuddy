@@ -67,7 +67,7 @@ public class TransactionControllerTest {
         int u=transactionService.getTransactions(receiver).size();
         mockmvc.perform(MockMvcRequestBuilders.post("/saveTransaction")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"relationshipEmail\": \"" + receiver.getEmail()
+                .content("{\"relationship\": \"" + receiver.getEmail()
                         + "\", \"amount\": 100, \"description\": \"test\"}"));
         List<Transaction> transactions = transactionService.getTransactions(receiver);
         assertEquals(u+1, transactions.size());
