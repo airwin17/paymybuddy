@@ -2,6 +2,7 @@ package com.pmb.paymybuddy.dto;
 
 public class TransactionDTO {
     private String relationship;
+    private String relationshipEmail;
     private Double amount;
     private String description;
 
@@ -14,7 +15,13 @@ public class TransactionDTO {
         this.amount = amount;
         this.description = description;
     }
+    public String getRelationshipEmail() {
+        return relationshipEmail;
+    }
 
+    public void setRelationshipEmail(String relationshipEmail) {
+        this.relationshipEmail = relationshipEmail;
+    }
     public String getRelationship() {
         return relationship;
     }

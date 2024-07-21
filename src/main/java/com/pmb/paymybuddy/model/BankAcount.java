@@ -1,6 +1,8 @@
 package com.pmb.paymybuddy.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -8,12 +10,16 @@ import jakarta.persistence.Table;
 @Table(name = "bank_account")
 public class BankAcount {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String iban;
     private double balance;
-    public BankAcount(String iban) {  
-        this.iban = iban;
+    public BankAcount(double balance) {
+        this.balance = balance;
     }
+    public BankAcount() {
+    }
+    
     public String getIban() {
         return iban;
     }

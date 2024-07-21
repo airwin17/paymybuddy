@@ -2,7 +2,6 @@ package com.pmb.paymybuddy.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pmb.paymybuddy.exceptions.ActionNotAllowed;
+import com.pmb.paymybuddy.exceptions.ConnectionAlreadyExistException;
 import com.pmb.paymybuddy.exceptions.EmailAlreadyExistsException;
 import com.pmb.paymybuddy.exceptions.UserNotFoundException;
 import com.pmb.paymybuddy.model.User;
@@ -27,13 +27,12 @@ public class UserController {
     @PostMapping("/saveUser")
     public ResponseEntity<String> createUser(@RequestBody User user) {
         try {
-            userService.save(user);
+            userService.createUser(user);
             return ResponseEntity.ok("User created");
         } catch (EmailAlreadyExistsException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
     @PutMapping("/updateUser")
     public ResponseEntity<HttpStatus> updateUser(@RequestBody User user, @AuthenticationPrincipal User logedUser) {
         userService.updateUser(user, logedUser);
@@ -48,6 +47,8 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }catch(ActionNotAllowed e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }catch(ConnectionAlreadyExistException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
 }

@@ -7,11 +7,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.pmb.paymybuddy.model.User;
 import com.pmb.paymybuddy.services.TransactionService;
+import com.pmb.paymybuddy.services.UserService;
 
 @Controller
 public class GlobalController {
     @Autowired
     private TransactionService transactionService;
+    @Autowired
+    private UserService userService;
     @GetMapping("/loginPage")
     public String login() {
     return "/views/login.html";
@@ -27,9 +30,10 @@ public class GlobalController {
     }
     @GetMapping("/addTransaction")
     public String ajouterUneTransaction(Model model,@AuthenticationPrincipal User user) {
-        //int=user.getConnectedUser().stream().map(i->i.getUsername()).toList();
-        model.addAttribute("transactions", transactionService.findTransactionsForView(user));
-        model.addAttribute("connections", user.getConnectedUser().stream().map(i->i.getUsername()).toList());
+        user=userService.loadConnectionForUser(user);
+        model.addAttribute("transactionsDTO", transactionService.getTransactionsForView(user));
+        model.addAttribute("UserDto", userService.getConnectedUser(user.getConnectedUser()));
+        model.addAttribute("credit", user.getBankAcount().getBalance());
         return "/views/addTransaction.html";
     }
     @GetMapping("/profil")

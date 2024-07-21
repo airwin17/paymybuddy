@@ -1,19 +1,22 @@
 package com.pmb.paymybuddy.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Transaction {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @OneToOne
-    @PrimaryKeyJoinColumn(name = "sender")
+    @ManyToOne
+    @JoinColumn(name = "sender")
     private User sender;
-    @OneToOne
-    @PrimaryKeyJoinColumn(name = "receiver")
+    @ManyToOne
+    @JoinColumn(name = "receiver")
     private User receiver;
     private double amount;
     private String description;
@@ -24,6 +27,8 @@ public class Transaction {
         this.amount = amount;
         this.description = description;
     }
+
+    public Transaction() {}
 
     public Integer getId() {
         return id;

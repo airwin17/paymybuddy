@@ -39,8 +39,9 @@ public class DatasourceConfig {
         http
         .csrf(csrf->csrf.disable())
         .authorizeHttpRequests(req->req
-        .requestMatchers("/api/user/saveUser").anonymous()
+        .requestMatchers("/api/user/saveUser").permitAll()
         .requestMatchers("/api/user/**").authenticated()
+        .requestMatchers("/api/transaction/saveTransaction").authenticated()
         .requestMatchers("/profil").authenticated()
         .requestMatchers("/addRelationship").authenticated()
         .requestMatchers("/addTransaction").authenticated()
