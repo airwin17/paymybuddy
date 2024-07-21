@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
 -- Host: localhost    Database: paymybuddydb
 -- ------------------------------------------------------
--- Server version	8.4.0
+-- Server version	8.0.38
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -18,27 +18,18 @@
 --
 -- Table structure for table `bank_account`
 --
-use paymybuddydb;
+
 DROP TABLE IF EXISTS `bank_account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `bank_account` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `balance` double NOT NULL,
   `iban` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `iban_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `bank_account`
---
-
-LOCK TABLES `bank_account` WRITE;
-/*!40000 ALTER TABLE `bank_account` DISABLE KEYS */;
-/*!40000 ALTER TABLE `bank_account` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `connections`
@@ -52,21 +43,12 @@ CREATE TABLE `connections` (
   `userID1` int NOT NULL,
   `userID2` int NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `userID1_UNIQUE` (`userID1`),
-  UNIQUE KEY `userID2_UNIQUE` (`userID2`),
-  CONSTRAINT `user1` FOREIGN KEY (`userID1`) REFERENCES `user` (`id`),
-  CONSTRAINT `user2` FOREIGN KEY (`userID2`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  KEY `user1fk_idx` (`userID1`),
+  KEY `user2fk_idx` (`userID2`),
+  CONSTRAINT `user1fk` FOREIGN KEY (`userID1`) REFERENCES `user` (`id`),
+  CONSTRAINT `user2fk` FOREIGN KEY (`userID2`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `connections`
---
-
-LOCK TABLES `connections` WRITE;
-/*!40000 ALTER TABLE `connections` DISABLE KEYS */;
-/*!40000 ALTER TABLE `connections` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `transaction`
@@ -80,23 +62,14 @@ CREATE TABLE `transaction` (
   `sender` int DEFAULT NULL,
   `receiver` int DEFAULT NULL,
   `description` varchar(200) DEFAULT NULL,
-  `amont` double NOT NULL,
+  `amount` double NOT NULL,
   PRIMARY KEY (`id`),
   KEY `senderfk_idx` (`sender`),
   KEY `receiverfk_idx` (`receiver`),
-  CONSTRAINT `receiverfk` FOREIGN KEY (`receiver`) REFERENCES `bank_account` (`id`),
-  CONSTRAINT `senderfk` FOREIGN KEY (`sender`) REFERENCES `bank_account` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  CONSTRAINT `receiverfk` FOREIGN KEY (`receiver`) REFERENCES `user` (`id`),
+  CONSTRAINT `senderfk` FOREIGN KEY (`sender`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `transaction`
---
-
-LOCK TABLES `transaction` WRITE;
-/*!40000 ALTER TABLE `transaction` DISABLE KEYS */;
-/*!40000 ALTER TABLE `transaction` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `user`
@@ -113,20 +86,10 @@ CREATE TABLE `user` (
   `bank_acount_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `baid_idx` (`bank_acount_id`),
-  CONSTRAINT `baid` FOREIGN KEY (`bank_acount_id`) REFERENCES `bank_account` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3;
+  KEY `bafk_idx` (`bank_acount_id`),
+  CONSTRAINT `bafk` FOREIGN KEY (`bank_acount_id`) REFERENCES `bank_account` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=264 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user`
---
-
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (11,'test','testo','$2a$12$hvubzRVMPKBZj5FXC6oiSudDudA1neLcW/43J/JzUlnfBc0urbVbe',NULL);
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -137,4 +100,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-13 22:02:43
+-- Dump completed on 2024-07-22  0:06:03

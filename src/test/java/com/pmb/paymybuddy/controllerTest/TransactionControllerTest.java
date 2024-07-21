@@ -65,7 +65,7 @@ public class TransactionControllerTest {
     @WithUserDetails(value = "newUser", userDetailsServiceBeanName = "userDetailsService")
     public void saveTransactionTest() throws Exception {
         int u=transactionService.getTransactions(receiver).size();
-        mockmvc.perform(MockMvcRequestBuilders.post("/saveTransaction")
+        mockmvc.perform(MockMvcRequestBuilders.post("/api/transaction/saveTransaction")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"relationship\": \"" + receiver.getEmail()
                         + "\", \"amount\": 100, \"description\": \"test\"}"));
@@ -78,7 +78,7 @@ public class TransactionControllerTest {
         int u=transactionService.getTransactions(receiver).size();
         mockmvc.perform(MockMvcRequestBuilders.post("/saveTransaction")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"relationshipEmail\": \"" + receiver.getEmail()
+                .content("{\"relationship\": \"" + receiver.getEmail()
                         + "\", \"amount\": 1000, \"description\": \"test\"}"));
         List<Transaction> transactions = transactionService.getTransactions(receiver);
         assertEquals(u, transactions.size());
@@ -95,7 +95,7 @@ public class TransactionControllerTest {
         int u=transactionService.getTransactions(receiver).size();
         mockmvc.perform(MockMvcRequestBuilders.post("/saveTransaction")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"relationshipEmail\": \"" + email
+                .content("{\"relationship\": \"" + email
                         + "\", \"amount\": 100, \"description\": \"test\"}"));
         List<Transaction> transactions = transactionService.getTransactions(receiver);
         assertEquals(u, transactions.size());
