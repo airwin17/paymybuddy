@@ -8,7 +8,7 @@ import com.pmb.paymybuddy.model.Connection;
 @RepositoryDefinition(domainClass = Connection.class, idClass = Integer.class)
 public interface ConnectionRepository{
     <S extends Connection> Connection save(Connection entity);
-    void deleteById1AndId2(int id1,int id2);
+    void deleteById1OrId2(int id1,int id2);
     Optional<Connection> findById1AndId2(int id1,int id2);
     List<Connection> findById1(int id);
 }

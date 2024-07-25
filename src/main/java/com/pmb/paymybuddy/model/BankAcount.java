@@ -32,4 +32,8 @@ public class BankAcount {
     public void setBalance(double balance) {
         this.balance = balance;
     }
+    public Integer getId() {
+        return id;
+    }
+    
 }

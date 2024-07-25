@@ -85,6 +85,17 @@ public class TransactionControllerTest {
     }
     @Test
     @WithUserDetails(value = "newUser", userDetailsServiceBeanName = "userDetailsService")
+    public void saveTransactionWhereChargingTest() throws Exception {
+        int u=transactionService.getTransactions(user).size();
+        mockmvc.perform(MockMvcRequestBuilders.post("/saveTransaction")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"relationship\": \"" + user.getEmail()
+                        + "\", \"amount\": 95, \"description\": \"test\"}"));
+        List<Transaction> transactions = transactionService.getTransactions(user);
+        assertEquals(u+1, transactions.size());
+    }
+    @Test
+    @WithUserDetails(value = "newUser", userDetailsServiceBeanName = "userDetailsService")
     public void saveTransactionWhereNoConnectionTest() throws Exception {
         String email="newUserTest"+String.valueOf(System.currentTimeMillis());
         User user1=new User();

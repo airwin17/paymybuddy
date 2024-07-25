@@ -82,17 +82,6 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    @Transactional
-    public void deleteUserByEmail(String email) {
-        User user = findUserByEmail(email);
-        user = loadConnectionForUser(user);
-        for (int id : user.getConnectedUser()) {
-            connectionRepository.deleteById1AndId2(user.getId(), id);
-        }
-
-        userRepository.delete(user);
-    }
-
     public void addCash(User user, double amount) {
         user.getBankAcount().setBalance(user.getBankAcount().getBalance() + amount);
         bankAcountRepository.save(user.getBankAcount());
