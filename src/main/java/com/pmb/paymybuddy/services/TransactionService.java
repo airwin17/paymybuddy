@@ -25,13 +25,13 @@ public class TransactionService {
         user=userService.loadConnectionForUser(user);
         double fee=transactiondDto.getAmount()*0.005;
         Transaction transaction = new Transaction(user, targetUser, transactiondDto.getAmount(),transactiondDto.getDescription());
-        if (!user.getConnectedUser().contains(transaction.getReceiver().getId())) {
+        if(user.getId()==targetUser.getId()){
+            transactionRepository.save(transaction);
+            userService.addCash(user, transaction.getAmount());
+        } else if (!user.getConnectedUser().contains(transaction.getReceiver().getId())) {
             throw new ConnectionNotFoundException("Connection not found");
         } else if (user.getBankAcount().getBalance() <= transaction.getAmount()+fee) {
             throw new NotEnoughBalanceException("Not enough balance");
-        }else if(user.getId()==targetUser.getId()){
-            transactionRepository.save(transaction);
-            userService.addCash(user, transaction.getAmount());
         } else{
             transactionRepository.save(transaction);
             userService.addCash(user, -transaction.getAmount());
