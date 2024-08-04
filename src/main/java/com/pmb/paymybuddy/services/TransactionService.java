@@ -25,7 +25,7 @@ public class TransactionService {
         user=userService.loadConnectionForUser(user);
         double fee=transactiondDto.getAmount()*0.005;
         Transaction transaction = new Transaction(user, targetUser, transactiondDto.getAmount(),transactiondDto.getDescription());
-        if(user.getId()==targetUser.getId()){
+        if(user.getId().intValue()==targetUser.getId().intValue()){
             transactionRepository.save(transaction);
             userService.addCash(user, transaction.getAmount());
         } else if (!user.getConnectedUser().contains(transaction.getReceiver().getId())) {
@@ -46,16 +46,24 @@ public class TransactionService {
         List<TransactionDTO> transactionDTOs = new LinkedList<>();
         for (int i = 0; i < transactions.size(); i++) {
             if (transactions.get(i).getSender().getId() != user.getId()) {
-                transactionDTOs.add(new TransactionDTO(
+                if(transactions.get(i).getSender().getId().intValue()==transactions.get(i).getReceiver().getId().intValue()){
+                    transactionDTOs.add(new TransactionDTO(
                         transactions.get(i).getReceiver().getUsername(),
-                        -transactions.get(i).getAmount(),
+                        transactions.get(i).getAmount(),
                         transactions.get(i).getDescription()));
+                }else
+                transactionDTOs.add(new TransactionDTO(
+                    transactions.get(i).getReceiver().getUsername(),
+                    -transactions.get(i).getAmount(),
+                    transactions.get(i).getDescription()));
             } else
                 transactionDTOs.add(new TransactionDTO(
                         transactions.get(i).getSender().getUsername(),
                         transactions.get(i).getAmount(),
                         transactions.get(i).getDescription()));
+            
         }
+        
         return transactionDTOs;
     }
     public List<Transaction> getTransactions(User user) {
