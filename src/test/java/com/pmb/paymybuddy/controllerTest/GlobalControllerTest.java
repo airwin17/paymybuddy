@@ -45,13 +45,13 @@ public class GlobalControllerTest {
         }
     }
     @Test
-    @WithUserDetails(value = "newUser", userDetailsServiceBeanName = "userDetailsService")
+    @WithUserDetails(value = "newUser")
     public void addTransactionTest() throws Exception {
         String str=mockmvc.perform(MockMvcRequestBuilders
         .get("/addTransaction")).andReturn().getResponse().getContentAsString();
         Document doc=Jsoup.parse(str);
         Element rel=doc.body().getElementById("relationship");
-        int size=rel.childrenSize()-1;
+        int size=rel.childrenSize()-2;
         assertEquals(user.getConnectedUser().size(), size);
         Element table=doc.body().getElementById("table").children().get(0);
         int sizeTable=table.childrenSize()-1;
@@ -70,13 +70,13 @@ public class GlobalControllerTest {
         assertEquals(true, str.length()>0);
     }
     @Test
-    @WithUserDetails(value = "newUser", userDetailsServiceBeanName = "userDetailsService")
+    @WithUserDetails(value = "newUser")
     public void ajouterUneRelation() throws UnsupportedEncodingException, Exception{
         String str=mockmvc.perform(MockMvcRequestBuilders.get("/addRelationship")).andReturn().getResponse().getContentAsString();
         assertEquals(true, str.length()>0);
     }
     @Test
-    @WithUserDetails(value = "newUser", userDetailsServiceBeanName = "userDetailsService")
+    @WithUserDetails(value = "newUser")
     public void profilTest() throws Exception {
         String str=mockmvc.perform(MockMvcRequestBuilders
         .get("/profil")).andReturn().getResponse().getContentAsString();

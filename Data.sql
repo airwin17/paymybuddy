@@ -1,3 +1,5 @@
+CREATE DATABASE IF NOT EXISTS `paymybuddydb`;
+USE `paymybuddydb`;
 DROP TABLE IF EXISTS `bank_account`;
 CREATE TABLE `bank_account` (
   `id` int NOT NULL AUTO_INCREMENT,

@@ -2,7 +2,7 @@ package com.pmb.paymybuddy.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,10 +14,13 @@ import com.pmb.paymybuddy.services.UserService;
 
 @Controller
 public class GlobalController {
-    @Autowired
+    
     private TransactionService transactionService;
-    @Autowired
     private UserService userService;
+    public GlobalController(TransactionService transactionService, UserService userService) {
+        this.transactionService = transactionService;
+        this.userService = userService;
+    }
     @GetMapping("/loginPage")
     public String login() {
     return "/views/login.html";

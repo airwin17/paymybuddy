@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,12 +26,19 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 
 @Service
 public class UserService implements UserDetailsService {
-    @Autowired
+
     private UserRepository userRepository;
-    @Autowired
+
     private BankAcountRepository bankAcountRepository;
-    @Autowired
+
     private ConnectionRepository connectionRepository;
+
+    public UserService(UserRepository userRepository, BankAcountRepository bankAcountRepository,
+            ConnectionRepository connectionRepository) {
+        this.userRepository = userRepository;
+        this.bankAcountRepository = bankAcountRepository;
+        this.connectionRepository = connectionRepository;
+    }
 
     public void createUser(User user) throws EmailAlreadyExistsException {
         if (userRepository.findUserByEmail(user.getEmail()).isPresent())
@@ -113,12 +119,13 @@ public class UserService implements UserDetailsService {
         }
         return user;
     }
+
     public List<UserDto> getConnectedUser(Set<Integer> users) {
         List<UserDto> userDtos = new LinkedList<>();
         for (int id : users) {
             Optional<User> user = userRepository.findById(id);
             if (user.isPresent()) {
-                UserDto userDto=new UserDto();
+                UserDto userDto = new UserDto();
                 userDto.setUsername(user.get().getUsername());
                 userDto.setEmail(user.get().getEmail());
                 userDtos.add(userDto);

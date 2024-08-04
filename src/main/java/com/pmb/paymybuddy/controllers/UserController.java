@@ -1,6 +1,6 @@
 package com.pmb.paymybuddy.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,8 +21,12 @@ import com.pmb.paymybuddy.services.UserService;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-    @Autowired
+
     private UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/saveUser")
     public ResponseEntity<String> createUser(@RequestBody User user) {
@@ -33,21 +37,24 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     @PutMapping("/updateUser")
     public ResponseEntity<HttpStatus> updateUser(@RequestBody User user, @AuthenticationPrincipal User logedUser) {
         userService.updateUser(user, logedUser);
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
     @PostMapping("/addConnection")
-    public ResponseEntity<HttpStatus> addConnection(@RequestParam String email,@AuthenticationPrincipal User logedUser) {
+    public ResponseEntity<HttpStatus> addConnection(@RequestParam String email,
+            @AuthenticationPrincipal User logedUser) {
         try {
             userService.addConnection(email, logedUser);
             return ResponseEntity.ok(HttpStatus.ACCEPTED);
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }catch(ActionNotAllowed e) {
+        } catch (ActionNotAllowed e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }catch(ConnectionAlreadyExistException e) {
+        } catch (ConnectionAlreadyExistException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }

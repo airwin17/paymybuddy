@@ -45,7 +45,7 @@ public class TransactionControllerTest {
             userService.createUser(user);
         }
         userService.setcash(userService.findUserByEmail("newUser"), 0);
-        userService.addCash(userService.findUserByEmail("newUser"), 100);
+        userService.addCash(userService.findUserByEmail("newUser"), 1000);
     }
 
     @BeforeEach
@@ -62,7 +62,7 @@ public class TransactionControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = "newUser", userDetailsServiceBeanName = "userDetailsService")
+    @WithUserDetails(value = "newUser")
     public void saveTransactionTest() throws Exception {
         int u=transactionService.getTransactions(receiver).size();
         mockmvc.perform(MockMvcRequestBuilders.post("/api/transaction/saveTransaction")
@@ -73,21 +73,21 @@ public class TransactionControllerTest {
         assertEquals(u+1, transactions.size());
     }
     @Test
-    @WithUserDetails(value = "newUser", userDetailsServiceBeanName = "userDetailsService")
+    @WithUserDetails(value = "newUser")
     public void saveTransactionWhereNoCashTest() throws Exception {
         int u=transactionService.getTransactions(receiver).size();
-        mockmvc.perform(MockMvcRequestBuilders.post("/saveTransaction")
+        mockmvc.perform(MockMvcRequestBuilders.post("/api/transaction/saveTransaction")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"relationship\": \"" + receiver.getEmail()
-                        + "\", \"amount\": 1000, \"description\": \"test\"}"));
+                        + "\", \"amount\": 10000, \"description\": \"test\"}"));
         List<Transaction> transactions = transactionService.getTransactions(receiver);
         assertEquals(u, transactions.size());
     }
     @Test
-    @WithUserDetails(value = "newUser", userDetailsServiceBeanName = "userDetailsService")
+    @WithUserDetails(value = "newUser")
     public void saveTransactionWhereChargingTest() throws Exception {
         int u=transactionService.getTransactions(user).size();
-        mockmvc.perform(MockMvcRequestBuilders.post("/saveTransaction")
+        mockmvc.perform(MockMvcRequestBuilders.post("/api/transaction/saveTransaction")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"relationship\": \"" + user.getEmail()
                         + "\", \"amount\": 95, \"description\": \"test\"}"));
@@ -95,7 +95,7 @@ public class TransactionControllerTest {
         assertEquals(u+1, transactions.size());
     }
     @Test
-    @WithUserDetails(value = "newUser", userDetailsServiceBeanName = "userDetailsService")
+    @WithUserDetails(value = "newUser")
     public void saveTransactionWhereNoConnectionTest() throws Exception {
         String email="newUserTest"+String.valueOf(System.currentTimeMillis());
         User user1=new User();

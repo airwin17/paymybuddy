@@ -67,7 +67,7 @@ public class UserControllerTest {
         assertEquals(before, after);
     }
     @Test
-    @WithUserDetails(value = "newUser", userDetailsServiceBeanName = "userDetailsService")
+    @WithUserDetails(value = "newUser")
     public void updateUserTest() throws Exception {
         mockmvc.perform(MockMvcRequestBuilders.put("/api/user/updateUser")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -79,7 +79,7 @@ public class UserControllerTest {
         assertEquals("testuoooo", after);
     }
     @Test
-    @WithUserDetails(value = "newUser", userDetailsServiceBeanName = "userDetailsService")
+    @WithUserDetails(value = "newUser")
     public void addConnectionTest() throws Exception {
         int before = userService.findUserByEmail("newUser").getConnectedUser().size();
         String email="newUserTest"+String.valueOf(System.currentTimeMillis());
@@ -94,7 +94,7 @@ public class UserControllerTest {
         assertEquals(before+1, logUser.getConnectedUser().size());
     }
     @Test
-    @WithUserDetails(value = "newUser", userDetailsServiceBeanName = "userDetailsService")
+    @WithUserDetails(value = "newUser")
     public void addConnectionWhereUserNotFoundTest() throws Exception {
         int before = userService.findUserByEmail("newUser").getConnectedUser().size();
         String email="newUserTest"+String.valueOf(System.currentTimeMillis());
@@ -109,7 +109,7 @@ public class UserControllerTest {
         assertEquals(before, logUser.getConnectedUser().size());
     }
     @Test
-    @WithUserDetails(value = "newUser", userDetailsServiceBeanName = "userDetailsService")
+    @WithUserDetails(value = "newUser")
     public void addConnectionWhereConnectionAlreadyExistTest() throws Exception {
         String email = "newUserTest" + String.valueOf(System.currentTimeMillis());
         User user1 = new User();
