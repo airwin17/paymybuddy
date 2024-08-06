@@ -18,13 +18,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.pmb.paymybuddy.repositories.BankAcountRepository;
+import com.pmb.paymybuddy.repositories.ConnectionRepository;
+import com.pmb.paymybuddy.repositories.UserRepository;
+import com.pmb.paymybuddy.services.UserService;
+
 
 
 
 @Configuration
 @EnableWebSecurity
 public class DatasourceConfig {
-        
+    private UserRepository userRepository;
+    private BankAcountRepository bankAcountRepository;
+    private ConnectionRepository connectionRepository;
+    
     @Bean
     public DataSource getDatasource() {
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
@@ -56,11 +64,14 @@ public class DatasourceConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+    @Bean public UserService userService(UserRepository userRepository, BankAcountRepository bankAcountRepository, ConnectionRepository connectionRepository) {
+        return new UserService(userRepository,bankAcountRepository,connectionRepository);
+    }
     @Bean 
     public ProviderManager authenticationProvider() {
         List<AuthenticationProvider> authenticationProviderList = new ArrayList<>();
         DaoAuthenticationProvider daoAuthenticationProvider=new DaoAuthenticationProvider();
-        
+        daoAuthenticationProvider.setUserDetailsService(userService(userRepository,bankAcountRepository,connectionRepository));
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         authenticationProviderList.add(daoAuthenticationProvider);
         ProviderManager providerManager = new ProviderManager(authenticationProviderList);
