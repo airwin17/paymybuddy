@@ -1,3 +1,5 @@
+paymybuddy is an app that would allow customers to transfer money to manage their finances or pay their friends.
+
 1- install mysql and setup database \
 2- config datasource DatasourceConfig \
 3- run sql file in database \
