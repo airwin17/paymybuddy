@@ -42,7 +42,6 @@ public class UserControllerTest {
         mockmvc.perform(MockMvcRequestBuilders.post("/api/user/saveUser")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(str));
-                System.out.println(str);
     }
     @Test
     public void createUserTest() throws Exception {

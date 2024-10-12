@@ -2,10 +2,6 @@ package com.pmb.paymybuddy.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.sql.DataSource;
-
-
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -26,6 +22,7 @@ import com.pmb.paymybuddy.services.UserService;
 
 
 
+
 @Configuration
 @EnableWebSecurity
 public class DatasourceConfig {
@@ -33,15 +30,19 @@ public class DatasourceConfig {
     private BankAcountRepository bankAcountRepository;
     private ConnectionRepository connectionRepository;
     
-    @Bean
-    public DataSource getDatasource() {
-        DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver");
-        dataSourceBuilder.url("jdbc:mysql://localhost:3306/paymybuddydb");
-        dataSourceBuilder.username("root");
-        dataSourceBuilder.password("rootroot");
-        return dataSourceBuilder.build();
-    }
+    
+    /**
+     * <li>Configures the security filter chain with the following rules:
+     *   <ul>
+     *     <li>CSRF is disabled.</li>
+     *     <li>anyone can create new account.</li>
+     *     <li>Authenticated users can access specific URLs related to their accounts and transactions.</li>
+     *     <li>Specifies the login form and its processing URL.</li>
+     *     <li>Configures the logout URL and its success URL.</li>
+     *   </ul>
+     * </li>
+     * 
+     */
     @Bean
     public SecurityFilterChain getSecurityFilterChain(HttpSecurity http) throws Exception {
         http

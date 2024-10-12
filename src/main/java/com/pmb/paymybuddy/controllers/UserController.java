@@ -18,6 +18,8 @@ import com.pmb.paymybuddy.exceptions.UserNotFoundException;
 import com.pmb.paymybuddy.model.User;
 import com.pmb.paymybuddy.services.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -27,7 +29,7 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
+    @Operation(summary = "Create a new user")
     @PostMapping("/saveUser")
     public ResponseEntity<String> createUser(@RequestBody User user) {
         try {
@@ -37,13 +39,13 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
+    @Operation(summary = "Update user information")
     @PutMapping("/updateUser")
     public ResponseEntity<HttpStatus> updateUser(@RequestBody User user, @AuthenticationPrincipal User logedUser) {
         userService.updateUser(user, logedUser);
         return ResponseEntity.ok(HttpStatus.OK);
     }
-
+    @Operation(summary = "Add a new connection between 2 users")
     @PostMapping("/addConnection")
     public ResponseEntity<HttpStatus> addConnection(@RequestParam String email,
             @AuthenticationPrincipal User logedUser) {

@@ -23,7 +23,19 @@ public class TransactionService {
         this.transactionRepository = transactionRepository;
         this.userService = userService;
     }
-
+    /**
+     * Creates new transaction between two users.if the follwing conditions met:
+     * <ul>
+     *  <li>the user is connected to the target user</li>
+     *  <li>the user has enough balance to make the transaction</li>
+     *  <li>the user is not the target user</li>
+     * </ul>
+     * if the user is the target user, the transaction is saved and the user's balance is updated
+     * @param transactiondDto the transaction to be created
+     * @param user who makes the transaction
+     * @throws NotEnoughBalanceException if the user has not enough balance
+     * @throws ConnectionNotFoundException if the user is not connected to the target user
+     */
     public void createTransaction(TransactionDTO transactiondDto, User user)
             throws NotEnoughBalanceException, ConnectionNotFoundException {
         User targetUser = userService.findUserByEmail(transactiondDto.getRelationship());
@@ -46,7 +58,11 @@ public class TransactionService {
         }
 
     }
-
+    /**
+     * Returns the list of all transactions for a given user.
+     * @param {@link User} the user to get the transactions for
+     * @return the list of all transactions for a given user
+     */
     public List<TransactionDTO> getTransactionsForView(User user) {
         List<Transaction> transactions = getTransactions(user);
         List<TransactionDTO> transactionDTOs = new LinkedList<>();

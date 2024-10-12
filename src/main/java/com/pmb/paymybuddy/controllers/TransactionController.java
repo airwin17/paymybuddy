@@ -14,6 +14,8 @@ import com.pmb.paymybuddy.exceptions.NotEnoughBalanceException;
 import com.pmb.paymybuddy.model.User;
 import com.pmb.paymybuddy.services.TransactionService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping("/api/transaction")
 public class TransactionController {
@@ -23,7 +25,7 @@ public class TransactionController {
     public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
     }
-
+    @Operation(summary = "Create a new transaction")
     @PostMapping("/saveTransaction")
     public ResponseEntity<String> createTransaction(@RequestBody TransactionDTO transactionDto,
             @AuthenticationPrincipal User user) {

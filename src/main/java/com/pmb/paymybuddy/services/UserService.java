@@ -39,7 +39,11 @@ public class UserService implements UserDetailsService {
         this.bankAcountRepository = bankAcountRepository;
         this.connectionRepository = connectionRepository;
     }
-
+    /**
+     * Creates a new user if the email is not already used
+     * @param {@link User} user the user to be created
+     * @throws EmailAlreadyExistsException if the email is already used
+     */
     public void createUser(User user) throws EmailAlreadyExistsException {
         if (userRepository.findUserByEmail(user.getEmail()).isPresent())
             throw new EmailAlreadyExistsException("Email already exists");
@@ -50,7 +54,14 @@ public class UserService implements UserDetailsService {
             userRepository.save(user);
         }
     }
-
+    /**
+     * Adds a connection between the loged user and the target user
+     * @param email the email of the target user
+     * @param {@link User} loged user
+     * @throws UserNotFoundException if the target user is not found
+     * @throws ActionNotAllowed if the loged user tries to connect to himself
+     * @throws ConnectionAlreadyExistException if the connection already exists
+     */
     public void addConnection(String email, User logedUser)
             throws UserNotFoundException, ActionNotAllowed, ConnectionAlreadyExistException {
         if (logedUser.getEmail().equals(email))
@@ -66,7 +77,11 @@ public class UserService implements UserDetailsService {
         } else
             throw new UserNotFoundException("User not found");
     }
-
+    /**
+     * Updates the user's information
+     * @param Nuser the new user information
+     * @param user the user to be updated
+     */
     public void updateUser(User Nuser, User user) {
         user.setEmail(Nuser.getEmail());
         user.setUsername(Nuser.getUsername());
@@ -74,7 +89,11 @@ public class UserService implements UserDetailsService {
             user.setPassword(encrypPassword(Nuser.getPassword()));
         userRepository.save(user);
     }
-
+    /**
+     * Finds a user by email
+     * @param email the email of the user
+     * @return the user if found, null otherwise
+     */
     public User findUserByEmail(String email) {
         Optional<User> user = userRepository.findUserByEmail(email);
         if (user.isPresent())
@@ -86,19 +105,26 @@ public class UserService implements UserDetailsService {
     public List<User> findAll() {
         return userRepository.findAll();
     }
-
+    /**
+     * Adds cash to the user's account
+     * @param user the user to add cash to
+     * @param amount the amount to be added to the user's account, can be negative
+     */
     public void addCash(User user, double amount) {
         user.getBankAcount().setBalance(user.getBankAcount().getBalance() + amount);
         bankAcountRepository.save(user.getBankAcount());
         userRepository.save(user);
     }
-
+    /**
+     * Sets the user's account balance to the given amount
+     * @param user the user to set the balance for
+     * @param amount the amount to set the balance to
+     */
     public void setcash(User user, int amount) {
         user.getBankAcount().setBalance(amount);
         bankAcountRepository.save(user.getBankAcount());
         userRepository.save(user);
     }
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<User> user = userRepository.findUserByEmail(email);
@@ -107,11 +133,19 @@ public class UserService implements UserDetailsService {
         else
             throw new UsernameNotFoundException("User not found");
     }
-
+    /**
+     * Encrypts the password
+     * @param password the password to be encrypted
+     * @return the encrypted password
+     */
     public String encrypPassword(String password) {
         return BCrypt.withDefaults().hashToString(12, password.toCharArray());
     }
-
+    /**
+     * Loads the connections for a given user
+     * @param user the user to load the connections for
+     * @return the {@link User} with the connections loaded
+     */
     public User loadConnectionForUser(User user) {
         List<Connection> connections = connectionRepository.findById1(user.getId());
         for (Connection connection : connections) {
@@ -119,7 +153,11 @@ public class UserService implements UserDetailsService {
         }
         return user;
     }
-
+    /**
+     * Returns the list of connected users
+     * @param users the list of connected users
+     * @return the list of connected users
+     */
     public List<UserDto> getConnectedUser(Set<Integer> users) {
         List<UserDto> userDtos = new LinkedList<>();
         for (int id : users) {

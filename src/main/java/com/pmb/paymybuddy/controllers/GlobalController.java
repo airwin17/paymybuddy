@@ -12,6 +12,8 @@ import com.pmb.paymybuddy.model.User;
 import com.pmb.paymybuddy.services.TransactionService;
 import com.pmb.paymybuddy.services.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @Controller
 public class GlobalController {
     
@@ -21,19 +23,22 @@ public class GlobalController {
         this.transactionService = transactionService;
         this.userService = userService;
     }
+    @Operation(summary = "return Login page")
     @GetMapping("/loginPage")
     public String login() {
     return "/views/login.html";
     }
-
+    @Operation(summary = "return Signin page")
     @GetMapping("/signin")
     public String singnin() {
         return "/views/signin.html";
     }
+    @Operation(summary = "return relationship page")
     @GetMapping("/addRelationship")
     public String ajouterUneRelation() {
         return "/views/addRelationship.html";
     }
+    @Operation(summary = "return transaction page")
     @GetMapping("/addTransaction")
     public String ajouterUneTransaction(Model model,@AuthenticationPrincipal User user) {
         user=userService.loadConnectionForUser(user);
@@ -44,6 +49,7 @@ public class GlobalController {
         model.addAttribute("credit", user.getBankAcount().getBalance());
         return "/views/addTransaction.html";
     }
+    @Operation(summary = "return profil page")
     @GetMapping("/profil")
     public String profil(Model model,@AuthenticationPrincipal User user) {
         model.addAttribute("username", user.getUsername());
