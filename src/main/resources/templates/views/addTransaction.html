@@ -4,9 +4,9 @@
 <head>
     <title>Add transaction</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link th:href="@{/css/header.css}" type="text/css" rel="stylesheet">
-    <link th:href="@{/css/addTransaction.css}" type="text/css" rel="stylesheet">
-    <script defer th:src="@{/js/addTransaction.js}"></script>
+    <link th:href="@{./css/header.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{./css/addTransaction.css}" type="text/css" rel="stylesheet">
+    <script defer th:src="@{./js/addTransaction.js}"></script>
 </head>
 
 <body>
@@ -14,7 +14,7 @@
     <h1 th:text="'credit = '+${credit}+' €'"></h1>
     <article id="article-form">
         <section id="section-form">
-            <form id="post-form" th:action="@{/api/user/saveTransaction}" method="post">
+            <form id="post-form" th:action="@{./api/user/saveTransaction}" method="post">
                 <select name="relarionship" id="relationship" required>
                     <option value="" disabled selected>Sélectionner une relation</option>
                     <option th:each="user :${UserDto}" th:text="${user.getUsername()}" th:value="${user.getEmail()}"></option>

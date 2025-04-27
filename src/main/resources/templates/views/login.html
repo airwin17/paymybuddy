@@ -4,17 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
-    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{./css/login.css}">
 </head>
 <body>
 <section id="login-section">
-    <form action="/login" method="post" id="login-form">
+    <form action="./login" method="post" id="login-form">
         <div id="title">
             <h1>pay my buddy</h1>
         </div>
         <input class="textfeild" type="text" placeholder="Mail" id="email" name="email">
         <input class="textfeild" type="password" placeholder="Mot de passe" id="password" name="password">
         <input type="submit" value="Se connecter" id="submit">
+        <div id="register">
+            <p>Pas encore de compte ?</p>
+            <a href="./signin">Créer un compte</a>
+        </div>
     </form>
 </section>
 </body>

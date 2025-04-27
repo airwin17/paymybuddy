@@ -26,17 +26,17 @@ public class GlobalController {
     @Operation(summary = "return Login page")
     @GetMapping("/loginPage")
     public String login() {
-    return "/views/login.html";
+    return "views/login.html";
     }
     @Operation(summary = "return Signin page")
     @GetMapping("/signin")
     public String singnin() {
-        return "/views/signin.html";
+        return "views/signin.html";
     }
     @Operation(summary = "return relationship page")
     @GetMapping("/addRelationship")
     public String ajouterUneRelation() {
-        return "/views/addRelationship.html";
+        return "views/addRelationship.html";
     }
     @Operation(summary = "return transaction page")
     @GetMapping("/addTransaction")
@@ -47,13 +47,18 @@ public class GlobalController {
         model.addAttribute("transactionsDTO", transactionService.getTransactionsForView(user));
         model.addAttribute("UserDto",userDtos );
         model.addAttribute("credit", user.getBankAcount().getBalance());
-        return "/views/addTransaction.html";
+        return "views/addTransaction.html";
     }
     @Operation(summary = "return profil page")
     @GetMapping("/profil")
     public String profil(Model model,@AuthenticationPrincipal User user) {
         model.addAttribute("username", user.getUsername());
         model.addAttribute("email", user.getEmail());
-        return "/views/editProfil.html";
+        return "views/editProfil.html";
+    }
+    @Operation(summary = "return home page")
+    @GetMapping("/")
+    public String home(Model model,@AuthenticationPrincipal User user) {
+        return "redirect:/addTransaction";
     }
 }

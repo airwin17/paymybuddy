@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Singn in</title>
-    <link rel="stylesheet" th:href="@{/css/login.css}">
-    <script defer th:src="@{/js/signin.js}"></script>
+    <link rel="stylesheet" th:href="@{./css/login.css}">
+    <script defer th:src="@{./js/signin.js}"></script>
 </head>
 <body>
     <section id="login-section">
@@ -17,6 +17,10 @@
             <input class="textfeild" type="text" placeholder="Mail" id="email" name="username">
             <input class="textfeild" type="password" placeholder="Mot de passe" id="password" name="password">
             <input type="submit" value="S'inscrire" id="submit" onsubmit="return singnin()">
+            <div id="register">
+                <p>Déjà un compte ?</p>
+                <a href="./loginPage">Se connecter</a>
+            </div>
         </form>
     </section>
 </body>

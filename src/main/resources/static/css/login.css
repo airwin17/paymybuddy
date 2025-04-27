@@ -23,6 +23,26 @@ body{
     padding: 12px 5px;
     color: white;
 }
+#register{
+    p{
+        margin: 10px auto;
+        font-size: 12px;
+    }
+    a{
+        background-color: #F69F1D;
+        text-decoration: none;
+        color:white;
+        text-align: center;
+        font-weight: normal;
+        font-size: 14px;
+        width: 100%;
+        margin: 10px auto;
+        padding: 10px 0px;
+        border-radius: 3px;
+        display: block;
+    }
+
+}
 #title h1{
     margin: 0px;
 }
@@ -49,7 +69,7 @@ body{
     border-radius: 3px;
     border-width: 0px;
     padding: 5px;
-    margin: 30px 30px;
+    margin: 10px 30px;
     aspect-ratio: 18/4;
     width: 140px;
     font-weight: bold;
