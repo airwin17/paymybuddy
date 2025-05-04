@@ -9,7 +9,7 @@ form.addEventListener("submit", e => {
         amount: amount,
         description: description
     }
-    fetch("/api/transaction/saveTransaction", {
+    fetch("./api/transaction/saveTransaction", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

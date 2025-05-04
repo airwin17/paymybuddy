@@ -52,6 +52,7 @@ public class GlobalController {
     @Operation(summary = "return profil page")
     @GetMapping("/profil")
     public String profil(Model model,@AuthenticationPrincipal User user) {
+        System.out.println("profilactivated");
         model.addAttribute("username", user.getUsername());
         model.addAttribute("email", user.getEmail());
         return "views/editProfil.html";

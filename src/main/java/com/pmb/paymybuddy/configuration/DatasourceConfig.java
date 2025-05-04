@@ -13,11 +13,20 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.context.SecurityContextHolderFilter;
+import org.springframework.web.servlet.function.ServerResponse;
 
 import com.pmb.paymybuddy.repositories.BankAcountRepository;
 import com.pmb.paymybuddy.repositories.ConnectionRepository;
 import com.pmb.paymybuddy.repositories.UserRepository;
 import com.pmb.paymybuddy.services.UserService;
+
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 
 

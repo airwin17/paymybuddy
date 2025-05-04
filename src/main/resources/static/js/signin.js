@@ -1,5 +1,5 @@
 var submit = document.getElementById("submit");
-var currentUrl = window.location.origin;
+var currentUrl = window.location.host;
 console.log(currentUrl);
 submit.addEventListener("click", e=>{
     e.preventDefault();
@@ -16,7 +16,7 @@ function signin() {
         email: email
     };
     jsonUser = JSON.stringify(user);
-    fetch(currentUrl+'/api/user/saveUser', {
+    fetch('./api/user/saveUser', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -25,7 +25,7 @@ function signin() {
     }).then(response => {
         if (response.ok) {
             alert("User created");
-            window.location.href = "/loginPage";
+            window.location.href = "./loginPage";
         }else{
             alert(response.statusText);
         }

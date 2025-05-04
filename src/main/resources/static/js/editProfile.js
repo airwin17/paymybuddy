@@ -48,7 +48,7 @@ submitButton.onclick=function(e){
         password: password
     };
     jsonUser = JSON.stringify(user);
-    fetch("/api/user/updateUser", {
+    fetch("./api/user/updateUser", {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
